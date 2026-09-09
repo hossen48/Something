@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#120b18">
+<title>For You — A Little Internet Corner of Us ♡</title>
+<meta name="description" content="An interactive birthday surprise made with love, chaos and too many hearts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="noise"></div>
+<div id="cursorHeart" aria-hidden="true">♡</div>
+
+<div class="music-pill" id="musicPill">
+  <button id="musicBtn" aria-label="Toggle music">♫</button>
+  <span id="musicLabel">tap for the soundtrack</span>
+</div>
+
+<div class="progress"><span id="progressBar"></span></div>
+
+<main id="app">
+
+  <!-- INTRO -->
+  <section class="screen active" id="s0">
+    <div class="stars"></div>
+    <div class="intro-photo" aria-hidden="true"><img src="assets/photos/10.webp" alt=""></div>
+    <div class="intro-wrap">
+      <div class="tiny-label">A VERY SERIOUS WEBSITE™</div>
+      <h1>Hey, <span class="pink">beautiful.</span></h1>
+      <p class="lead">I made you a tiny corner of the internet.</p>
+      <p class="sub">Warning: contains embarrassing levels of affection.</p>
+      <button class="primary" data-next>Okay, I'm curious <span>→</span></button>
+      <div class="micro">No login required. Your cuteness is already verified.</div>
+    </div>
+    <div class="floating-heart h1">♥</div><div class="floating-heart h2">♡</div><div class="floating-heart h3">♥</div>
+  </section>
+
+  <!-- LOCK -->
+  <section class="screen" id="s1">
+    <div class="lock-card glass">
+      <div class="lock-icon" id="lockIcon">🔒</div>
+      <div class="tiny-label">SECURITY CHECK</div>
+      <h2>Only one person is allowed in.</h2>
+      <p>And unfortunately for the rest of humanity, it's you.</p>
+      <div class="password-row">
+        <input id="secretInput" placeholder="type the secret word…" autocomplete="off">
+        <button id="unlockBtn">Unlock</button>
+      </div>
+      <div class="hint">Hint: the word I would use after seeing you ❤️</div>
+      <div id="unlockMsg" class="result"></div>
+      <button class="text-btn" id="skipUnlock">I forgot the secret (I'm still cute)</button>
+    </div>
+  </section>
+
+  <!-- BIRTHDAY -->
+  <section class="screen" id="s2">
+    <div class="bday-stage">
+      <div class="tiny-label">OFFICIAL ANNOUNCEMENT</div>
+      <div class="cake-wrap" id="cake">
+        <div class="flame">🔥</div>
+        <div class="cake">🎂</div>
+      </div>
+      <h2 class="big-script">Happy Birthday</h2>
+      <h1 class="name">ADU <span>♡</span></h1>
+      <div class="birthday-date">12 SEPTEMBER · 24 TODAY</div>
+      <p class="lead">Today the world gets one year more lucky.</p>
+      <button class="primary" id="blowBtn">Make a wish ✨</button>
+      <div class="micro" id="wishMsg"></div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="screen" id="s3">
+    <div class="dashboard">
+      <div class="tiny-label">THE MAIN MENU</div>
+      <h2>Choose your adventure.</h2>
+      <p class="sub">Everything is clickable. Yes, I planned this much.</p>
+
+      <div class="chapter-grid">
+        <button class="chapter pink-card" data-open="letter"><span class="emoji">💌</span><b>A letter</b><small>the soft part</small></button>
+        <button class="chapter yellow-card" data-open="chaos"><span class="emoji">😂</span><b>Boyfriend.exe</b><small>classified nonsense</small></button>
+        <button class="chapter red-card" data-open="reasons"><span class="emoji">🗂️</span><b>Love archive</b><small>open the sealed files</small></button>
+        <button class="chapter purple-card" data-open="memories"><span class="emoji">📸</span><b>Our little museum</b><small>10 frames · all clickable</small></button>
+        <button class="chapter blue-card" data-open="timeline"><span class="emoji">🗓️</span><b>Our story</b><small>2012 → now</small></button>
+        <button class="chapter yellow-card" data-open="investigation"><span class="emoji">🔎</span><b>Relationship investigation</b><small>solve the tiny case</small></button>
+        <button class="chapter red-card" data-open="quiz"><span class="emoji">💘</span><b>Compatibility test</b><small>7 questions · fake science</small></button>
+        <button class="chapter green-card" data-open="finale"><span class="emoji">🎁</span><b>Final transmission</b><small>do not skip this</small></button>
+      </div>
+      <div class="completion"><span id="doneCount">0</span>/8 unlocked <span class="dot">•</span> <span id="statusText">explore everything — yes, all of it</span><span class="visit-clock">time spent: <b id="visitTime">00:00</b></span></div>
+    </div>
+  </section>
+
+  <!-- MODAL LAYERS -->
+  <div class="modal" id="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card" id="modalCard">
+      <button class="close" id="closeModal">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <section class="screen" id="s4">
+    <div class="finale">
+      <div class="tiny-label">THE LAST PAGE</div>
+      <div class="final-orbit">♡</div>
+      <h2 class="big-script">If I had to choose again…</h2>
+      <h1>I’d still choose <span>you.</span></h1>
+      <p id="finalType" class="letter-text"></p>
+      <div class="micro">Made with love, poor sleep, and suspicious amounts of CSS.</div>
+    </div>
+  </section>
+</main>
+
+<!-- CONTENT TEMPLATES -->
+<template id="tpl-letter">
+  <div class="letter-chapter">
+    <div class="modal-eyebrow">CHAPTER 01 · THE SOFT PART</div>
+    <div class="letter-topline"><span>H♡A</span><small>FOR ADU · FROM HOSSEN</small></div>
+    <h2>A letter I mean<br>with my whole heart.</h2>
+    <div class="letter-paper">
+      <div class="letter-paper-corner">♡</div>
+      <p class="letter-greeting">Dear Adu,</p>
+      <p>I love you more than I could ever properly explain.</p>
+      <p>You are everything I could ever want, and somehow, after knowing you for so many years, I still feel lucky that I get to call you mine.</p>
+      <p class="letter-emphasis">Thank you for choosing me.</p>
+      <p>Thank you for the care you put into my life.<br>Thank you for your time. Thank you for holding my hand when I need it. Thank you for forgiving me when I don't deserve it.</p>
+      <p>You became my best friend before you became my girlfriend, and maybe that's why loving you feels so natural.</p>
+      <p>I don't just want the beautiful days with you. I want the ordinary days too. Random food trips. Stupid arguments. Your funny faces. Your cooking. Your hand in mine.</p>
+      <p class="letter-emphasis soft">I want all of it.</p>
+      <div class="letter-signoff">I love you, Adu.</div>
+      <p>And I hope that one day, when we look back at this little website, we'll laugh because we actually got everything we dreamed about.</p>
+      <p>A home. Two little kids. A happy life together.<br>And maybe... Japan. 🇯🇵</p>
+      <p class="letter-emphasis">I'll choose you again and again.</p>
+      <div class="letter-signature">— Hossen ♡</div>
+    </div>
+    <div class="letter-note"><span>PRIVATE NOTE</span><p>There are some things a website can't properly say. This is just Hossen trying anyway.</p></div>
+    <button class="primary mini-next" data-modal-next="chaos">Okay, make me laugh now →</button>
+  </div>
+</template>
+
+<template id="tpl-chaos">
+  <div class="modal-eyebrow">CHAPTER 02 · CLASSIFIED EVIDENCE</div>
+  <h2>Boyfriend.exe has stopped responding.</h2>
+  <p>Reason: girlfriend detected.</p>
+  <div class="stats">
+    <div><span>100%</span><small>thinks you're pretty</small></div>
+    <div><span>97%</span><small>pretends to be normal</small></div>
+    <div><span>∞</span><small>times says “one more photo”</small></div>
+  </div>
+  <div class="fake-terminal">
+    <p>&gt; scanning girlfriend…</p>
+    <p>&gt; cuteness level: <b>ILLEGAL</b></p>
+    <p>&gt; boyfriend brain: <b>gone</b></p>
+    <p>&gt; recommendation: <b>hug immediately</b></p>
+  </div>
+  <div class="evidence-grid"><div>2012 → childhood friends</div><div>24 Jan 2026 → official trouble</div><div>Hossen → boyfriend.exe</div><div>Adu → system administrator</div></div>
+  <button class="primary mini-next" data-modal-next="reasons">Open the suspicious love files →</button>
+</template>
+
+<template id="tpl-reasons">
+  <div class="modal-eyebrow">CHAPTER 03 · CLASSIFIED LOVE ARCHIVE</div>
+  <h2>There are files with your name on them.</h2>
+  <p class="sub">Do not rush. Each sealed file opens only when you click it. Some are sweet. Some are embarrassing. A few are legally questionable. 😂</p>
+  <div class="archive-progress"><span id="reasonCount">0</span>/10 files opened <span>·</span> <b id="reasonStatus">the archive remains stubbornly locked</b></div>
+  <div class="reason-grid" id="reasonGrid">
+    <button class="reason-file" data-reason="0">FILE 01 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="1">FILE 02 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="2">FILE 03 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="3">FILE 04 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="4">FILE 05 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="5">FILE 06 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="6">FILE 07 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="7">FILE 08 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="8">FILE 09 <span>SEALED</span></button>
+    <button class="reason-file" data-reason="9">FILE 10 <span>SEALED</span></button>
+  </div>
+  <div class="reason-reveal" id="reasonReveal"><div class="file-stamp">TOP SECRET · FOR ADU ONLY</div><div class="reason-reveal-grid"><div><div id="reasonTitle">Choose a file.</div><p id="reasonBody">I spent an unreasonable amount of time making these. You should spend an unreasonable amount of time opening them.</p></div><img id="reasonPhoto" src="assets/photos/03.webp" alt="Adu"></div></div>
+  <div class="hand-secret" id="handSecret">
+    <div class="hand-secret-icon">🫱🏻‍🫲🏻</div>
+    <div><span class="mini-label">UNLISTED MEMORY · HOSSEN'S NOTE</span><h3>There is one thing I couldn't turn into a file.</h3><p>When Adu grabs my hand, everything suddenly feels a little quieter. I love that moment more than I know how to explain.</p></div>
+    <button class="secondary" id="holdHandBtn">Let me hold it →</button>
+    <div class="hand-response" id="handResponse">Hand secured. No refunds. No letting go. ♡</div>
+  </div>
+  <button class="primary mini-next" id="reasonsNext" data-modal-next="memories" disabled>Archive complete → museum unlocked</button>
+</template>
+
+<template id="tpl-memories">
+  <div class="modal-eyebrow">CHAPTER 04 · OUR LITTLE MUSEUM</div>
+  <h2>Exhibit A: us.</h2>
+  <p class="sub">I tried to choose one favourite photo. I failed spectacularly. So here are <b>10 little frames</b> instead. Tap any photo for the full-size version. ♡</p>
+  <div class="museum-intro"><span>ARCHIVE NO. 01</span><b>THE “HOW DID WE GET THIS MANY PHOTOS?” COLLECTION</b><i>curated with questionable objectivity</i></div>
+  <div class="photo-grid real-gallery">
+    <figure class="polaroid tilt-a"><button class="photo-open" data-photo="01.webp" data-caption="The ‘I don't care’ face. Extremely convincing. Completely ineffective on me."><img loading="lazy" src="assets/photos/01.webp" alt="Adu wearing sunglasses with a playful caption"></button><figcaption>“I don't care.” Sure, Pakhi. 😂</figcaption></figure>
+    <figure class="polaroid tilt-b"><button class="photo-open" data-photo="02.webp" data-caption="A quiet little moment on the sofa. The kind of photo that makes ordinary days feel important."><img loading="lazy" src="assets/photos/02.webp" alt="Adu sitting on a sofa"></button><figcaption>“A very serious sofa situation.”</figcaption></figure>
+    <figure class="polaroid tilt-c"><button class="photo-open" data-photo="03.webp" data-caption="That smile. Case closed. No further evidence required."><img loading="lazy" src="assets/photos/03.webp" alt="Adu smiling in a black sari"></button><figcaption>“The smile file.” ♡</figcaption></figure>
+    <figure class="polaroid tilt-d"><button class="photo-open" data-photo="04.webp" data-caption="An illustrated little version of us, because apparently real life wasn't enough for the archive."><img loading="lazy" src="assets/photos/04.webp" alt="Illustrated couple sitting together outdoors"></button><figcaption>“Alternate universe: us.”</figcaption></figure>
+    <figure class="polaroid tilt-b"><button class="photo-open" data-photo="05.webp" data-caption="A tiny illustrated reminder that sometimes just looking at you makes the rest of the world feel less noisy."><img loading="lazy" src="assets/photos/05.webp" alt="Illustrated couple giving thumbs up"></button><figcaption>“Officially approved.”</figcaption></figure>
+    <figure class="polaroid tilt-a"><button class="photo-open" data-photo="06.webp" data-caption="Adu, looking away for approximately two seconds and somehow still looking completely like herself."><img loading="lazy" src="assets/photos/06.webp" alt="Adu in a light blue outfit outdoors"></button><figcaption>“Caught being you.”</figcaption></figure>
+    <figure class="polaroid tilt-d"><button class="photo-open" data-photo="07.webp" data-caption="A red-and-cream sari moment that belongs in the ‘stop being this pretty’ folder."><img loading="lazy" src="assets/photos/07.webp" alt="Adu beside a large tree in a sari"></button><figcaption>“Respectfully… wow.”</figcaption></figure>
+    <figure class="polaroid tilt-c"><button class="photo-open" data-photo="08.webp" data-caption="The hair file. Yes, I noticed. Yes, I am allowed to be obsessed with it."><img loading="lazy" src="assets/photos/08.webp" alt="Close side profile showing Adu's hair"></button><figcaption>“The hair deserves a chapter.”</figcaption></figure>
+    <figure class="polaroid tilt-b"><button class="photo-open" data-photo="09.webp" data-caption="Our illustrated yellow-outfit universe. Very cute. Suspiciously accurate in spirit."><img loading="lazy" src="assets/photos/09.webp" alt="Illustrated couple outdoors with Adu in yellow"></button><figcaption>“Another universe, same problem.”</figcaption></figure>
+    <figure class="polaroid tilt-a"><button class="photo-open" data-photo="10.webp" data-caption="A real little us moment. One of the frames I would happily keep forever."><img loading="lazy" src="assets/photos/10.webp" alt="Hossen and Adu smiling together in a selfie"></button><figcaption>“Us. No explanation needed.”</figcaption></figure>
+  </div>iv>
+  <div class="photo-note"><b>Museum rule:</b> tap a photo. Stare for as long as necessary. Pretend you're not smiling. I won't tell. 🤭</div>
+  <div class="photo-counter"><span id="galleryCount">0</span>/10 viewed · <span id="galleryStatus">the curator is watching 👀</span></div>
+  <button class="primary mini-next" data-modal-next="timeline">Show me the timeline →</button>
+</template>
+
+<template id="tpl-timeline">
+  <div class="modal-eyebrow">CHAPTER 04 · HOW WE GOT HERE</div>
+  <h2>Our story, in tiny chapters.</h2>
+  <div class="timeline">
+    <article><i>2012</i><div><b>THE CHILDHOOD FRIEND ERA</b><p>We started as childhood friends. Apparently the universe was taking notes.</p></div></article>
+    <article><i>24·01</i><div><b>THE DAY IT BECAME OFFICIAL</b><p>24 January 2026 — the day “us” stopped being a theory.</p></div></article>
+    <article><i>★</i><div><b>THE FAVOURITE MEMORY FILES</b><p>My birthday. The night before Eid. That Ramna date. Three memories that refuse to leave my head.</p></div></article>
+    <article><i>♥</i><div><b>THE INSIDE-JOKE ERA</b><p>Somehow I “manipulated” you into dating me. Tragic. Nobody else would have chosen me, so you sadly had to. 😂</p></div></article>
+    <article><i>12</i><div><b>12 SEPTEMBER 2026</b><p>Today: Adu turns 24. Happy birthday, Pakhi. ♡</p></div></article>
+    <article><i>∞</i><div><b>THE PART I WANT NEXT</b><p>More ordinary days, more ridiculous memories, and a future where I marry you as soon as possible.</p></div></article>
+  </div>
+  <button class="primary mini-next" data-modal-next="finale">One last thing →</button>
+</template>
+
+<template id="tpl-investigation">
+  <div class="modal-eyebrow">CHAPTER 06 · RELATIONSHIP INVESTIGATION</div>
+  <h2>Case #24012026</h2>
+  <p>Detective Adu, three clues are hidden below. Tap the clues, then make your accusation.</p>
+  <div class="clue-board">
+    <button class="clue" data-clue="1">🔎 CLUE A<div>Who has the evil creepy laugh?</div></button>
+    <button class="clue" data-clue="2">🔎 CLUE B<div>What does Hossen secretly love even when it annoys him?</div></button>
+    <button class="clue" data-clue="3">🔎 CLUE C<div>What is the official date of the relationship?</div></button>
+  </div>
+  <div id="caseResult" class="case-result">Three clues. Tap all three.</div>
+  <button class="primary" id="solveCase" disabled>Solve the case →</button>
+</template>
+
+<template id="tpl-quiz">
+  <div class="modal-eyebrow">CHAPTER 07 · PEER-REVIEWED SCIENCE</div>
+  <h2>Compatibility test: Hossen × Adu</h2>
+  <p>Seven questions. One extremely biased scientific institution. Answer all of them.</p>
+  <div class="quiz" id="quizBox">
+    <div class="quiz-top"><span id="quizProgress">QUESTION 1 / 7</span><span id="quizScore">score: 0</span></div>
+    <div class="q active" id="quizQuestion"></div>
+    <div class="answers" id="quizAnswers"></div>
+    <div class="quiz-result" id="quizResult"></div>
+  </div>
+</template>
+
+<template id="tpl-finale">
+  <div class="modal-eyebrow">CHAPTER 06 · PLEASE READ</div>
+  <h2>One last thing.</h2>
+  <div class="paper dark-paper">
+    <p>I could fill this website with a thousand reasons, but honestly, I don't want to reduce you to a list.</p>
+    <p>You're a person I want to keep discovering.</p>
+    <p>So let's keep making the silly memories, taking terrible photos, laughing at things nobody else understands, and finding our way through the hard days too.</p>
+    <p class="signature">Happy birthday, my favourite human. ♡</p>
+  </div>
+  <button class="primary" id="finalClose">Keep this page forever ♡</button>
+</template>
+
+<div class="photo-lightbox" id="photoLightbox" aria-hidden="true">
+  <div class="photo-lightbox-backdrop"></div>
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close photo">×</button>
+    <img id="lightboxImg" src="" alt="Expanded memory">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+
+
+</body>
+</html>
